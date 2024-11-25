@@ -37,23 +37,23 @@ cd IDIP
 
 ### 2. 后端设置
 
-bash
+```bash
 cd be
 go mod tidy
 go run main.go
-
+```
 ### 3. 前端设置
 
-bash
+```bash
 cd fe
 npm install
 npm run serve
-
+```
 ### 4. RTSP服务
-bash
+```bash
 cd rtsp
 python main.py
-
+```
 ### 端口说明
 - 后端 API：8882
 - RTSP 服务：5000
