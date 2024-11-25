@@ -1,0 +1,45 @@
+database:
+  driver: mysql
+  host: localhost
+  port: 3306
+  username: root
+  password: admin
+  dbname: video_db
+  charset: utf8mb4
+  max_idle: 10
+  max_open: 100
+
+storage:
+  type: local  # local, s3, oss
+  video_path: ./storage/videos
+  temp_path: ./storage/temp
+  s3:
+    endpoint: your-s3-endpoint
+    access_key_id: your-access-key
+    secret_access_key: your-secret-key
+    bucket_name: your-bucket
+    region: your-region
+
+rtsp:
+  ffmpeg_path: ffmpeg
+  ffprobe_path: ffprobe
+  timeout: 10s
+  segment_length: 3600  # 1小时
+
+jwt:
+  secret: your-jwt-secret-key
+  expire_time: 24h
+
+log:
+  level: info
+  filename: ./logs/app.log
+  max_size: 100    # MB
+  max_backups: 10
+  max_age: 30      # days
+  compress: true
+
+server:
+  port: 8882
+  mode: debug  # debug, release
+  read_timeout: 60s
+  write_timeout: 60s
