@@ -2,7 +2,10 @@ module videodb/be
 
 go 1.20
 
-require github.com/gin-gonic/gin v1.10.0
+require (
+	github.com/gin-gonic/gin v1.10.0
+	gorm.io/gorm v1.25.7
+)
 
 require (
 	github.com/aws/aws-sdk-go v1.38.20 // indirect
@@ -42,11 +45,9 @@ require (
 	github.com/subosito/gotenv v1.6.0 // indirect
 	github.com/u2takey/go-utils v0.3.1 // indirect
 	github.com/wlynxg/anet v0.0.3 // indirect
-	go.uber.org/atomic v1.9.0 // indirect
 	go.uber.org/multierr v1.10.0 // indirect
 	golang.org/x/exp v0.0.0-20230905200255-921286631fa9 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
-	gorm.io/gorm v1.25.7 // indirect
 )
 
 require (
@@ -55,7 +56,6 @@ require (
 	github.com/bytedance/sonic/loader v0.1.1 // indirect
 	github.com/cloudwego/base64x v0.1.4 // indirect
 	github.com/cloudwego/iasm v0.2.0 // indirect
-	github.com/deepch/vdk v0.0.27
 	github.com/gabriel-vasile/mimetype v1.4.3 // indirect
 	github.com/gin-contrib/cors v1.7.2
 	github.com/gin-contrib/sse v0.1.0 // indirect
