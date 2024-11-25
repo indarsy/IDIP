@@ -30,10 +30,10 @@
 ## 快速开始
 
 ### 1. 克隆项目
-bash
+```bash
 git clone git@github.com:indarsy/IDIP.git
 cd IDIP
-
+```
 
 ### 2. 后端设置
 
