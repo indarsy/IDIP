@@ -1,3 +1,27 @@
 be.md
 fe.md
 be/storage/captures/*
+
+fe/.DS_Store
+fe/node_modules
+fe/dist
+
+
+# local env files
+fe/.env.local
+fe/.env.*.local
+
+# Log files
+fe/npm-debug.log*
+fe/yarn-debug.log*
+fe/yarn-error.log*
+fe/pnpm-debug.log*
+
+# Editor directories and files
+fe/.idea
+fe/.vscode
+fe/*.suo
+fe/*.ntvs*
+fe/*.njsproj
+fe/*.sln
+fe/*.sw?
