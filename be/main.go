@@ -98,6 +98,7 @@ func setupRouter(db *gorm.DB) *gin.Engine {
 			videos.DELETE("/:id", videoHandler.Delete)
 			videos.GET("/:id/download", videoHandler.Download)
 			videos.DELETE("/batch", videoHandler.BatchDelete)
+			videos.GET("/stream", videoHandler.StreamVideo)
 		}
 
 		// 车间相关路由

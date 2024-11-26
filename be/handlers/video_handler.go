@@ -2,6 +2,9 @@ package handlers
 
 import (
 	"fmt"
+	"net/http"
+	"os"
+	"path/filepath"
 	"strconv"
 	"time"
 
@@ -253,4 +256,28 @@ func (h *VideoHandler) BatchDelete(c *gin.Context) {
 	}
 
 	utils.Success(c, nil)
+}
+
+func (h *VideoHandler) StreamVideo(c *gin.Context) {
+	filePath := c.Query("path")
+
+	// 安全检查：确保路径在允许的目录内
+	absPath, err := filepath.Abs(filePath)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid path"})
+		return
+	}
+
+	// 检查文件是否存在
+	if _, err := os.Stat(absPath); os.IsNotExist(err) {
+		c.JSON(http.StatusNotFound, gin.H{"error": "File not found"})
+		return
+	}
+
+	// 设置响应头
+	c.Header("Content-Type", "video/mp4")
+	c.Header("Content-Disposition", "inline")
+
+	// 流式传输视频
+	c.File(absPath)
 }

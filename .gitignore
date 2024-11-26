@@ -25,3 +25,5 @@ fe/*.ntvs*
 fe/*.njsproj
 fe/*.sln
 fe/*.sw?
+be/__debug_*
+video_db.sql

@@ -1,13 +1,6 @@
 <template>
   <div class="video-player">
-    <video
-      ref="videoPlayer"
-      class="video-js vjs-default-skin"
-      controls
-      preload="auto"
-      width="100%"
-      height="auto"
-    >
+    <video ref="videoPlayer" class="video-js vjs-default-skin" controls preload="auto" width="100%" height="auto">
       <source :src="src" :type="videoType">
       您的浏览器不支持视频播放
     </video>
@@ -20,7 +13,7 @@ import 'video.js/dist/video-js.css'
 
 export default {
   name: 'VideoPlayer',
-  
+
   props: {
     src: {
       type: String,
@@ -31,7 +24,7 @@ export default {
       default: () => ({})
     }
   },
-  
+
   data() {
     return {
       player: null,
@@ -55,7 +48,7 @@ export default {
       }
     }
   },
-  
+
   computed: {
     videoType() {
       const ext = this.src.split('.').pop().toLowerCase()
@@ -71,15 +64,15 @@ export default {
       }
     }
   },
-  
+
   mounted() {
     this.initPlayer()
   },
-  
+
   beforeUnmount() {
     this.disposePlayer()
   },
-  
+
   watch: {
     src: {
       handler(newVal) {
@@ -98,43 +91,60 @@ export default {
       deep: true
     }
   },
-  
+
   methods: {
     initPlayer() {
       const options = {
         ...this.defaultOptions,
         ...this.options
       }
-      
+
       this.player = videojs(this.$refs.videoPlayer, options, () => {
-        this.player.src({ src: this.src, type: this.videoType })
-        this.player.on('error', this.handleError)
+        this.player.src({
+          src: this.src,
+          type: this.videoType
+        })
+
+        // 添加错误处理
+        this.player.on('error', () => {
+          const error = this.player.error()
+          console.error('视频播放错误:', error)
+          this.$emit('error', error)
+        })
+
+        // 添加加载事件处理
+        this.player.on('loadstart', () => {
+          console.log('开始加载视频:', this.src)
+        })
       })
     },
-    
+
+    handleError() {
+      const error = this.player.error()
+      console.error('视频错误:', error)
+      this.$emit('error', error)
+    },
+
     disposePlayer() {
       if (this.player) {
         this.player.dispose()
         this.player = null
       }
     },
-    
-    handleError() {
-      this.$emit('error', this.player.error())
-    },
-    
+
+
     play() {
       if (this.player) {
         this.player.play()
       }
     },
-    
+
     pause() {
       if (this.player) {
         this.player.pause()
       }
     },
-    
+
     reset() {
       if (this.player) {
         this.player.currentTime(0)
@@ -160,4 +170,4 @@ export default {
 :deep(.vjs-fullscreen) {
   aspect-ratio: unset;
 }
-</style> 
+</style>

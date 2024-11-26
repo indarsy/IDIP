@@ -85,7 +85,12 @@ func (s *CaptureService) startCapture(capture *models.Capture) {
 	}
 
 	// 创建基础存储目录
-	baseStorageDir := filepath.Join("/tmp", "videodb", "storage", "captures")
+	homeDir, err := os.UserHomeDir()
+	if err != nil {
+		return
+	}
+	baseStorageDir := filepath.Join(homeDir, "videodb", "storage", "captures")
+	//baseStorageDir := filepath.Join("/tmp", "videodb", "storage", "captures")
 
 	// 创建输出目录 - 使用车间ID
 	outputDir := filepath.Join(baseStorageDir, fmt.Sprintf("%d", workshop.ID))

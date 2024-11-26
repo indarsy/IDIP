@@ -4,36 +4,21 @@
     <el-form :inline="true" :model="queryForm" class="query-form">
       <el-form-item label="车间">
         <el-select v-model="queryForm.workshopId" placeholder="请选择车间" clearable style="width: 240px;">
-          <el-option
-            v-for="item in workshops"
-            :key="item.id"
-            :value="item.id"
-            :label="item.name"
-          />
+          <el-option v-for="item in workshops" :key="item.id" :value="item.id" :label="item.name" />
         </el-select>
       </el-form-item>
       <el-form-item label="时间范围" required>
         <el-row :gutter="10">
           <el-col :span="11">
-            <el-date-picker
-              v-model="queryForm.startTime"
-              type="datetime"
-              placeholder="开始时间"
-              style="width: 100%"
-              value-format="YYYY-MM-DD HH:mm:ss"
-            />
+            <el-date-picker v-model="queryForm.startTime" type="datetime" placeholder="开始时间" style="width: 100%"
+              value-format="YYYY-MM-DD HH:mm:ss" />
           </el-col>
           <el-col :span="2" class="text-center">
             <span class="separator">至</span>
           </el-col>
           <el-col :span="11">
-            <el-date-picker
-              v-model="queryForm.endTime"
-              type="datetime"
-              placeholder="结束时间"
-              style="width: 100%"
-              value-format="YYYY-MM-DD HH:mm:ss"
-            />
+            <el-date-picker v-model="queryForm.endTime" type="datetime" placeholder="结束时间" style="width: 100%"
+              value-format="YYYY-MM-DD HH:mm:ss" />
           </el-col>
         </el-row>
       </el-form-item>
@@ -51,11 +36,7 @@
     </div>
 
     <!-- 视频列表 -->
-    <el-table
-      v-loading="loading"
-      :data="videoList"
-      @selection-change="handleSelectionChange"
-    >
+    <el-table v-loading="loading" :data="videoList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" />
       <el-table-column prop="captureId" label="采集ID" width="100" />
       <el-table-column prop="fileName" label="文件名" />
@@ -66,15 +47,15 @@
         </template>
       </el-table-column>
       <el-table-column label="开始时间" width="240">
-    <template #default="{ row }">
-      {{ formatDateTime(row.startTime) }}
-    </template>
-  </el-table-column>
-  <el-table-column label="结束时间" width="240">
-    <template #default="{ row }">
-      {{ formatDateTime(row.endTime) }}
-    </template>
-  </el-table-column>
+        <template #default="{ row }">
+          {{ formatDateTime(row.startTime) }}
+        </template>
+      </el-table-column>
+      <el-table-column label="结束时间" width="240">
+        <template #default="{ row }">
+          {{ formatDateTime(row.endTime) }}
+        </template>
+      </el-table-column>
       <el-table-column prop="duration" label="时长" width="100">
         <template #default="{ row }">
           {{ formatDuration(row.duration) }}
@@ -92,31 +73,15 @@
     </el-table>
 
     <!-- 分页 -->
-    <el-pagination
-      class="pagination"
-      :current-page="queryForm.page"
-      :page-size="queryForm.pageSize"
-      :total="total"
-      layout="total, prev, pager, next, jumper"
-      @current-change="handlePageChange"
-    />
+    <el-pagination class="pagination" :current-page="queryForm.page" :page-size="queryForm.pageSize" :total="total"
+      layout="total, prev, pager, next, jumper" @current-change="handlePageChange" />
 
     <!-- 视频预览对话框 -->
-    <el-dialog
-      v-model="previewVisible"
-      title="视频预览"
-      width="80%"
-      :destroy-on-close="true"
-    >
-      <video-player
-        v-if="previewVisible"
-        :src="previewUrl"
-        :options="{
-          autoplay: false,
-          controls: true,
-        }"
-        @error="handleVideoError"
-      />
+    <el-dialog v-model="previewVisible" title="视频预览" width="80%" :destroy-on-close="true">
+      <video-player v-if="previewVisible" :src="previewUrl" :options="{
+        autoplay: false,
+        controls: true,
+      }" @error="handleVideoError" />
     </el-dialog>
   </div>
 </template>
@@ -124,21 +89,22 @@
 <script>
 import { mapState, mapActions } from 'vuex'
 import VideoPlayer from './VideoPlayer.vue'
-import { 
-  getWorkshopList, 
-  downloadVideo, 
-  startRecording, 
-  stopRecording 
+import {
+  getWorkshopList,
+  downloadVideo,
+  startRecording,
+  stopRecording
 } from '@/api/video'
 import { formatDateTime } from '@/utils/format'
+//import { ElMessage } from 'element-plus'
 
 export default {
   name: 'VideoManager',
-  
+
   components: {
     VideoPlayer
   },
-  
+
   data() {
     return {
       queryForm: {
@@ -210,19 +176,19 @@ export default {
       formatDateTime,
     }
   },
-  
+
   computed: {
     ...mapState('video', ['videoList', 'total'])
   },
-  
+
   created() {
     this.fetchWorkshops()
     this.fetchVideos()
   },
-  
+
   methods: {
     ...mapActions('video', ['getVideoList', 'deleteVideo', 'batchDeleteVideos']),
-    
+
     // 获取车间列表
     async fetchWorkshops() {
       try {
@@ -232,7 +198,7 @@ export default {
         this.$message.error('获取车间列表失败')
       }
     },
-    
+
     // 获取视频列表
     async fetchVideos() {
       this.loading = true
@@ -249,13 +215,13 @@ export default {
         this.loading = false
       }
     },
-    
+
     // 处理查询
     handleSearch() {
       this.queryForm.page = 1
       this.fetchVideos()
     },
-    
+
     // 重置查询
     resetQuery() {
       this.queryForm = {
@@ -268,29 +234,36 @@ export default {
       this.timeRange = []
       this.fetchVideos()
     },
-    
+
     // 处理分页
     handlePageChange(page) {
       this.queryForm.page = page
       this.fetchVideos()
     },
-    
+
     // 处理选择
     handleSelectionChange(selection) {
       this.selectedVideos = selection
     },
-    
+
     // 处理预览
     async handlePreview(row) {
-      console.log('API URL:', process.env.VUE_APP_API_URL)
-      const baseUrl = process.env.VUE_APP_API_URL
-      const cleanPath = row.filePath.replace(/^storage[/\\]/, '').replace(/\\/g, '/')
-      const encodedPath = encodeURIComponent(cleanPath)
-      
-      this.previewUrl = `${baseUrl}/storage/${encodedPath}`
-      this.previewVisible = true
+      try {
+        const baseUrl = process.env.VUE_APP_API_URL || ''
+        console.log('文件路径:', row.filePath)
+
+        // 使用视频流接口
+        const url = `${baseUrl}/api/videos/stream?path=${encodeURIComponent(row.filePath)}`
+        console.log('预览URL:', url)
+
+        this.previewUrl = url
+        this.previewVisible = true
+      } catch (error) {
+        console.error('处理预览失败:', error)
+        this.$message.error('视频预览失败')
+      }
     },
-    
+
     // 处理下载
     async handleDownload(row) {
       try {
@@ -305,7 +278,7 @@ export default {
         this.$message.error('下载失败')
       }
     },
-    
+
     // 处理删除
     async handleDelete(row) {
       try {
@@ -321,7 +294,7 @@ export default {
         }
       }
     },
-    
+
     // 处理批量删除
     async handleBatchDelete() {
       try {
@@ -338,7 +311,7 @@ export default {
         }
       }
     },
-    
+
     // 开始录制
     async handleStartRecord() {
       try {
@@ -351,7 +324,7 @@ export default {
         this.$message.error('开始录制失败')
       }
     },
-    
+
     // 停止录制
     async handleStopRecord() {
       try {
@@ -363,7 +336,7 @@ export default {
         this.$message.error('停止录制失败')
       }
     },
-    
+
     // 格式化时长
     formatDuration(seconds) {
       const h = Math.floor(seconds / 3600)
@@ -371,19 +344,19 @@ export default {
       const s = Math.floor(seconds % 60)
       return `${h}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`
     },
-    
+
     // 格式化文件大小
     formatFileSize(bytes) {
       if (!bytes) return '0 MB'
       const mb = bytes / (1024 * 1024)
       return `${mb.toFixed(2)} MB`
     },
-    
+
     // 处理视频错误
     handleVideoError(error) {
       this.$message.error('视频加载失败：' + error.message)
     },
-    
+
     // 禁用未来日期
     disabledDate(time) {
       return time.getTime() > Date.now()
@@ -432,4 +405,4 @@ export default {
 .separator {
   color: #909399;
 }
-</style> 
+</style>
